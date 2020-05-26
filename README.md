@@ -14,9 +14,13 @@ This concrete model was made for searching nearest neighbours in torsion angles 
 
 ## Method
 To make use of the python library sklearn.neighbours.KDTree, without modifying it, preprocessing of our data was needed. This modification can be made quite simply. We can just clone each vector in each dimension. Ex. for period = 360 we clone the angle 350 to -10. So that it computes the right distance. 
-This way we obtain $$2^n$$ vectors, where n is the number of periodical dimensions of our vector. This number may sound huge, but keep in mind, that we make this computation only when the data set is changed. The search in KD-tree is preformed in $O(\log(m))$, where m is the size of the dataset. From this we see, that n is just an additive constant by preforming the search of nearest neighbours.
+This way we obtain 2^n times more vectors, where n is the number of periodical dimensions of our vector. This number may sound huge, but keep in mind, that we make this computation only when the data set is changed. The search in KD-tree is preformed in O(\log(m)), where m is the size of the dataset. From this we see, that n is just an additive constant by preforming the search of nearest neighbours.
 
-We build the tree from numpy array by each run as our data set is not so large (ca. 41 000 vectors). It is also possible to store the KD-tree on disc. 
+We build the tree from numpy array by each run as our data set is not extremely large (ca. 41 000 vectors). It is also possible to store the KD-tree on disc. 
 
+### Small optimalization
+  We shifted the midst of the period for each on angle in vector to the median of all angles on the same position in vector. So that the range is changed to median +- half period. This shift is then made also on the input vector. Then, we clone just those angles, those distance from median is bigger than certain number (can be set in settings.py). For our data, on ca. 7000 vectors the final number of vectors, after optimalization was ca. 41 000 (instead of 6000 * 2^10).
+  
+## Implementation
 
 
